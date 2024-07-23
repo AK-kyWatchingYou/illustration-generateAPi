@@ -1,0 +1,11 @@
+services:
+  painting-api:
+    container_name: painting-api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./python:/app
+    ports:
+      - 8000:8000
+    tty: true

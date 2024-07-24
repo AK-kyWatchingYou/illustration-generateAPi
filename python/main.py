@@ -1,5 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from parser.XML_parser import parse_recipi
+from recipi.recipi import generate_recipi
+
+class Ingredients(BaseModel):
+    ingredients: list[str]
 
 origins = [
     "http://localhost",
@@ -15,6 +21,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.get("/recipi")
+def recipi(ingredeints: Ingredients):
+    recipis_xml = generate_recipi(ingredeints.ingredients)
+    recipis_json = parse_recipi(recipis_xml)
+    return recipis_json
